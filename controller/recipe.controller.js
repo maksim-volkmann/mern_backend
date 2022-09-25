@@ -36,21 +36,23 @@ export const createRecipe = async (req, res) => {
   }
 }
 
+// const updatedRecipe = await recipeModel.findById(req.params.id, {
+//   $set: req.body,
+// })
+
 export const updateRecipe = async (req, res) => {
   try {
-    const updatedRecipe = await recipeModel.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: req.body,
-      },
-      { new: true },
-    )
+    const updatedRecipe = await recipeModel.findById({ _id: req.params.id })
 
     if (req.user.id !== updatedRecipe.creatorID) {
       return res.status(401).json('This is not your recipe!')
     }
 
-    res.status(200).json('Recipe successfully UPDATED')
+    await updatedRecipe.updateOne({
+      $set: req.body,
+    })
+
+    return res.status(200).json('Recipe successfully UPDATED')
   } catch (error) {
     res.status(405).send(error)
     console.log(error)
@@ -59,11 +61,13 @@ export const updateRecipe = async (req, res) => {
 
 export const deleteRecipe = async (req, res) => {
   try {
-    const deleteRecipe = await recipeModel.findByIdAndDelete(req.params.id)
+    const deleteRecipe = await recipeModel.findById({ _id: req.params.id })
 
     if (req.user.id !== deleteRecipe.creatorID) {
       return res.status(401).json('This is not your recipe!')
     }
+
+    await deleteRecipe.deleteOne()
 
     res.status(200).json('Recipe successfully DELETED')
   } catch (error) {
