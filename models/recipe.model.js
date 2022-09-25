@@ -23,7 +23,7 @@ const recipeShema = new Schema(
       type: Number,
       required: true,
     },
-    readyin: {
+    readyIn: {
       type: String,
       required: true,
     },
@@ -31,7 +31,7 @@ const recipeShema = new Schema(
       type: Number,
       required: true,
     },
-    goodfor: {
+    goodFor: {
       type: String,
       required: true,
     },

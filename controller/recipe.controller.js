@@ -23,7 +23,7 @@ export const getAllRecipesByUser = async (req, res) => {
 export const createRecipe = async (req, res) => {
   try {
     const newRecipe = new recipeModel({
-      ...req.body,
+      ...req.body.recipe,
       creatorID: req.user.id,
       author: req.user.name,
     })
@@ -47,10 +47,25 @@ export const updateRecipe = async (req, res) => {
     )
 
     if (req.user.id !== updatedRecipe.creatorID) {
-      return res.status(401).send('This is not your recipe!')
+      return res.status(401).json('This is not your recipe!')
     }
 
-    res.status(200).send(`The recipe updated successfully!`)
+    res.status(200).json('Recipe successfully UPDATED')
+  } catch (error) {
+    res.status(405).send(error)
+    console.log(error)
+  }
+}
+
+export const deleteRecipe = async (req, res) => {
+  try {
+    const deleteRecipe = await recipeModel.findByIdAndDelete(req.params.id)
+
+    if (req.user.id !== deleteRecipe.creatorID) {
+      return res.status(401).json('This is not your recipe!')
+    }
+
+    res.status(200).json('Recipe successfully DELETED')
   } catch (error) {
     res.status(405).send(error)
     console.log(error)
