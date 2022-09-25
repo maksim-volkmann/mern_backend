@@ -47,7 +47,7 @@ const recipeShema = new Schema(
       required: true,
     },
     ingredients: {
-      type: [{ quantity: String, product: String }],
+      type: String,
       required: true,
     },
     creatorID: {
