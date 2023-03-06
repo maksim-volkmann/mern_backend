@@ -54,7 +54,6 @@ export const updateUserById = async (req, res) => {
       req.params.id,
       {
         $set: req.body,
-        isAdmin: req.body.isAdmin ? req.body.isAdmin : false,
       },
       { new: true },
     )
